@@ -1,0 +1,43 @@
+{% extends "../layouts/public_base.twig" %}
+{% block main %}
+<div class="auth-layout">
+
+    <div class="auth-left">
+        <img src="/img/cat.jpg" alt="Cat">
+        <div class="auth-left-content">
+            <p class="auth-left-text text-white">Déjà un compte ?</p>
+        </div>
+        <a href="/login" class="auth-left-cta">Me connecter</a>
+    </div>
+
+    <div class="auth-right">
+        <a class="auth-logo" href="/"><img src="/img/logo.png" alt="Pawclinic"></a>
+
+        <h1>Créer mon compte</h1>
+
+        {% if error is defined %}
+            <div class="alert-error">{{ error }}</div>
+        {% endif %}
+
+        <form action="/register" method="POST">
+            <div class="form-group">
+                <input type="text" name="siret" placeholder="Siret *" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="raisonSociale" placeholder="Raison sociale *" required>
+            </div>
+            <div class="form-group">
+                <input type="text" name="nomDirecteur" placeholder="Nom (optionnel)">
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" placeholder="Mot de passe *" required>
+            </div>
+            <div class="form-group">
+                <input type="password" name="passwordConfirm" placeholder="Confirmer le mot de passe *" required>
+            </div>
+            <button type="submit" class="btn-login">Créer mon compte</button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,327 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --teal:       #2a9d8f;
+    --teal-dark:  #1f7a6e;
+    --teal-light: #e8f5f3;
+    --green: #1fab69;
+    --green-light: #e8fde9;
+    --red:        #e63946;
+    --red-light:  #fde8ea;
+    --gray-100:   #f1f3f5;
+    --gray-200:   #e9ecef;
+    --gray-400:   #adb5bd;
+    --gray-600:   #6c757d;
+    --gray-800:   #343a40;
+    --white:      #ffffff;
+    --radius:     10px;
+    --radius-sm:  6px;
+    --shadow-sm:  0 1px 3px rgba(0,0,0,.08);
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--white);
+    color: var(--gray-800);
+    min-height: 100vh;
+}
+
+.text-white {
+    color: var(--white) !important; /* Important permet de donner la priorité à la couleur blanche même si elle est redéfinie plus bas (sauf si plus bas on met aussi !important sur la propriété */
+}
+
+/* LOGO */
+
+.auth-logo img {
+    height: 3.5rem;
+    width: auto;
+    margin-bottom: 2px;
+}
+
+/*AUTH LAYOUT*/
+
+.auth-layout {
+    display:flex;
+    min-height: 100vh;
+}
+
+/* Panneau gauche — formulaire */
+.auth-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 80px;
+    background: var(--white);
+}
+
+.auth-right--centered {
+    justify-content: center;
+    gap: 24px;
+}
+
+.auth-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--teal);
+    text-decoration: none;
+    margin-bottom: 28px;
+}
+
+.auth-right h1 {
+    font-size: 3rem;
+    margin-bottom: .25em;
+    font-weight: 900;
+    color: var(--teal);
+    text-align: center;
+}
+
+/* Panneau droit — image */
+.auth-left {
+    width: 45%;
+    max-width: 673px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 40px 32px;
+    background: var(--gray-100);
+}
+
+.auth-left img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+}
+
+.auth-left-content {
+    position: absolute;
+    top: 15%;
+    z-index: 1;
+    text-align: center;
+    width: 100%;
+}
+
+.auth-left-text {
+    color: var(--teal);
+    font-size: 1.6rem;
+    font-weight: 900;
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+
+.auth-left-subtitle {
+    color: var(--teal);
+    font-size: .9rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+.auth-left-cta {
+    display: inline-block;
+    background: var(--green);
+    color: var(--white);
+    font-size: 1rem;
+    font-weight: 800;
+    padding: 14px 36px;
+    border-radius: 30px;
+    text-decoration: none;
+    position: absolute;
+    bottom: 150px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    transition: opacity .15s;
+}
+
+.auth-left-cta:hover { opacity: .88; }
+
+/* Page Inscription réussie */
+.success-box {
+    background: var(--green);
+    color: var(--white);
+    border-radius: var(--radius);
+    padding: 32px 48px;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 900;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    width: 100%;
+    max-width: 420px;
+}
+
+.btn-login--icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    width: auto;
+    padding: 15px 40px;
+    text-decoration: none;
+}
+/* FORMULAIRE */
+
+.form-group {
+    width: 100%;
+    max-width: 420px;
+    margin-bottom: 14px;
+}
+
+.input-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon svg {
+    position: absolute;
+    left: 14px;
+    color: var(--gray-400);
+    pointer-events: none;
+    flex-shrink: 0;
+}
+
+.input-icon input,
+.form-group input {
+    width: 100%;
+    padding: 14px 16px; /* sans icône */
+    background: var(--gray-100);
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-family: 'Nunito', sans-serif;
+    font-size: .95rem;
+    color: var(--gray-800);
+    outline: none;
+    transition: border-color .15s;
+}
+
+.input-icon input {
+    padding: 14px 16px 14px 44px;
+}
+
+.input-icon input:focus,
+.form-group input:focus {
+    border-color: var(--teal);
+    background: var(--white);
+}
+
+.forgot {
+    display: block;
+    text-align: center;
+    font-size: .85rem;
+    color: var(--gray-600);
+    text-decoration: none;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.forgot:hover { color: var(--teal); }
+
+.btn-login {
+    width: 100%;
+    max-width: 420px;
+    padding: 15px;
+    background: var(--teal);
+    color: var(--white);
+    border: none;
+    border-radius: 30px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background .15s;
+    letter-spacing: .02em;
+}
+
+.btn-login:hover { background: var(--teal-dark); }
+
+/* ALERT */
+
+.alert-error, .alert-success {
+    width: 100%;
+    max-width: 420px;
+    background: var(--red-light);
+    color: var(--red);
+    border-radius: var(--radius-sm);
+    padding: 10px 16px;
+    font-weight: 700;
+    font-size: .85rem;
+    margin-bottom: 16px;
+}
+
+.alert-success {
+    background: var(--green-light);
+    color: var(--green);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+
+    .auth-layout {
+        flex-direction: column;
+    }
+
+    .auth-left {
+        width: 100%;
+        height: 280px;
+        min-height: unset;
+    }
+
+    .auth-left img {
+        object-position: center center;
+    }
+
+    .auth-left-cta {
+        bottom: 20px;
+    }
+
+    .auth-right {
+        padding: 40px 24px;
+    }
+
+    .auth-right h1 {
+        font-size: 1.5rem;
+    }
+
+    .form-group {
+        max-width: 100%;
+    }
+
+    .btn-login {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .auth-left {
+        height: 220px;
+    }
+
+    .auth-left-text {
+        font-size: 1.2rem;
+    }
+
+    .auth-left-subtitle {
+        font-size: .8rem;
+    }
+
+    .auth-right {
+        padding: 32px 20px;
+    }
+
+    .auth-right h1 {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+    }
+}

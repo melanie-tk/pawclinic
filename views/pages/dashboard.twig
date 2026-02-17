@@ -1,0 +1,108 @@
+{% extends "../layouts/app_base.twig" %}
+
+{% block main %}
+
+	<div class="stats-row">
+		<div class="stat-card">
+			<div class="stat-icon">
+				<img src="/img/employee.svg" alt="Employés">
+			</div>
+			<div>
+				<div class="stat-label">Employés</div>
+				<div class="stat-value">{{ users | length }}</div>
+			</div>
+		</div>
+
+		<div class="stat-card">
+			<div class="stat-icon">
+				<img src="/img/badge.svg" alt="Badges">
+			</div>
+			<div>
+				<div class="stat-label">Badges</div>
+				<div class="stat-value">{{ accessbadges | length }}</div>
+			</div>
+		</div>
+
+		<div class="stat-card active">
+			<div class="stat-icon">
+				<img src="/img/associes.svg" alt="Badges associés">
+			</div>
+			<div>
+				<div class="stat-label">Badges associés</div>
+				<div class="stat-value">{{ badgesAssociesCount }}</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Badge cards -->
+	{% if accessbadges is not empty %}
+		<div class="badge-cards">
+			{% for badge in accessbadges %}
+				<div class="badge-card {{ badge.user ? '' : 'free' }}">
+					<div class="badge-card-title">{{ badge.nfc }}</div>
+					<div class="badge-card-name">{{ badge.user ? badge.user.lastName ~ ' ' ~ badge.user.firstName : 'Disponible' }}</div>
+{#					<div class="badge-card-name">{% if badge.user %} {{ badge.user.lastName }} {{ badge.user.firstName }} {% else %} Disponible {% endif %}</div> #} Equivalent à la ligne au-dessus soit un if. condition ? si vrais : si faux
+					<div class="badge-card-action">
+						<a href="/badges/{{ badge.id }}/edit" class="btn">{{ badge.user ? 'Modifier' : 'Assigner' }}</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+
+
+	<!-- Tableau employés -->
+	<div class="card">
+		<div class="section-header">
+			<h2>Employés</h2>
+			<a href="/users/create" class="btn btn-primary btn-sm">+ Ajouter un employé</a>
+		</div>
+
+		{% if users is empty %}
+			<p class="empty">Aucun employé enregistré.</p>
+		{% else %}
+			<table>
+				<thead>
+					<tr>
+						<th>Nom</th>
+						<th>Prénom</th>
+						<th>Email</th>
+						<th>Badge</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for user in users %}
+						<tr>
+							<td>
+								<strong>{{ user.lastName }}</strong>
+							</td>
+							<td>{{ user.firstName }}</td>
+							<td>{{ user.email }}</td>
+							<td>
+								{% if user.badge %}
+									<span class="badge-status assigned">{{ user.badge.nfc }}</span>
+								{% else %}
+									<span class="badge-status free">Aucun</span>
+								{% endif %}
+							</td>
+							<td>
+								<div class="actions">
+									<a href="/users/{{ user.id }}/edit" class="btn btn-ghost btn-sm">Modifier</a>
+									<form action="/users/{{ user.id }}/delete" method="POST">
+										<button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+									</form>
+								</div>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% endif %}
+		<div>
+			<a href="/users/create" class="add-link">
+				+ Ajouter un employé
+			</a>
+		</div>
+	</div>
+{% endblock %}

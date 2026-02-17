@@ -1,0 +1,11 @@
+model Company {
+    id            Int           @id @default(autoincrement())
+    raisonSociale String        @db.VarChar(50)
+    siret         String        @unique @db.VarChar(14)
+    passwordHash  String
+    nomDirecteur  String?
+    users         User[]
+    badges        AccessBadge[]
+    createdAt     DateTime      @default(now())
+    updatedAt     DateTime      @updatedAt
+}

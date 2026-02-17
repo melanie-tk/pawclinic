@@ -1,0 +1,10 @@
+model AccessBadge {
+    id        Int      @id @default(autoincrement())
+    nfc       String   @unique // Numéro unique pour le badge
+    companyId Int
+    company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+    userId    Int?     @unique
+    user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull) // Si on supprime le véto, le badge redevient dispo
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
