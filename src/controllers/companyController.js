@@ -121,3 +121,7 @@ export async function postForgotPassword(req, res) {
         })
     }
 }
+export function Logout(req, res) {
+    req.session.company = null;
+    res.redirect("/")
+}

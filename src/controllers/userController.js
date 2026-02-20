@@ -4,7 +4,7 @@ const prisma = new PrismaClient({ adapter })
 
 export async function addUser(req, res) {
     try {
-        const { firstName, lastName, email } = req.body
+        const { firstName, lastName, email, password, age, gender } = req.body
         await prisma.user.create({
             data: {
                 firstName,
@@ -16,12 +16,15 @@ export async function addUser(req, res) {
                 companyId: req.company.id // Lié automatiquement à la company connectée
             }
         })
-        res.redirect("/")
+        res.redirect("/dashboard")
     } catch (error) {
         console.log(error);
-        res.render("pages/home.twig", {
-            error: "Erreur lors de la création de l'employé"
-        })
+
+        //Erreur quand un badge est déjà existant, et qu'on souhaite créer le badge avec le même NFC
+        if (error.code === 'P2002') {
+            return res.redirect("/dashboard?error=Cet email existe déjà")
+        }
+        return res.redirect("/dashboard?error=Erreur lors de la création de l'employé")
     }
 }
 
@@ -31,7 +34,7 @@ export async function updateUser(req, res) {
         await prisma.user.update({
             where: {
                 id: parseInt(req.params.id),
-                companyId: req.company.id // ✅ Sécurité
+                companyId: req.company.id // Sécurité
             },
             data: {
                 firstName,
@@ -56,7 +59,7 @@ export async function deleteUser(req, res) {
         await prisma.user.delete({
             where: {
                 id: parseInt(req.params.id),
-                companyId: req.company.id // ✅ Sécurité
+                companyId: req.company.id // Sécurité
             }
         })
         res.redirect("/")

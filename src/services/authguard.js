@@ -24,7 +24,7 @@ export async function authguard(req, res, next){
             }
         }
         else{
-            throw new Error("Aucun utilisateur enregistré en session")
+            res.redirect("/login")
         }
     } catch (error) {
         console.log(error);
