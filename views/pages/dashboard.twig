@@ -35,74 +35,169 @@
 	</div>
 
 	<!-- Badge cards -->
-	{% if accessbadges is not empty %}
-		<div class="badge-cards">
-			{% for badge in accessbadges %}
-				<div class="badge-card {{ badge.user ? '' : 'free' }}">
-					<div class="badge-card-title">{{ badge.nfc }}</div>
-					<div class="badge-card-name">{{ badge.user ? badge.user.lastName ~ ' ' ~ badge.user.firstName : 'Disponible' }}</div>
-{#					<div class="badge-card-name">{% if badge.user %} {{ badge.user.lastName }} {{ badge.user.firstName }} {% else %} Disponible {% endif %}</div> #} Equivalent à la ligne au-dessus soit un if. condition ? si vrais : si faux
-					<div class="badge-card-action">
-						<a href="/badges/{{ badge.id }}/edit" class="btn">{{ badge.user ? 'Modifier' : 'Assigner' }}</a>
-					</div>
-				</div>
-			{% endfor %}
+	{#					<div class="badge-card-name">{% if badge.user %} {{ badge.user.lastName }} {{ badge.user.firstName }} {% else %} Disponible {% endif %}</div> //Equivalent à la ligne au-dessus soit un if. condition ? si vrais : si fauxx#}
+
+	{# BADGES #}
+		<div class="card"> <div class="section-header">
+			<h2>Badges</h2>
+
+			{# Formulaire pour créer un badge #}
+			<form action="/badges/add" method="POST" class="form-inline">
+				<input type="text" name="nfc" placeholder="Code NFC" required>
+				<button type="submit" class="btn-create">+ Créer</button>
+			</form>
 		</div>
-	{% endif %}
+
+		{% if accessbadges is empty %}
+			<p class="empty">Aucun badge enregistré.</p>
+		{% else %}
+
+			<div class="badge-cards">
+				{% for badge in accessbadges %}
+					<div class="badge-card {{ badge.user ? '' : 'free' }}">
+						<div class="badge-card-title">{{ badge.nfc }}</div>
+
+						<div class="badge-card-name">
+							{% if badge.user %}
+								{{ badge.user.lastName }}
+								{{ badge.user.firstName }}
+							{% else %}
+								<strong>Disponible</strong>
+							{% endif %}
+						</div>
+
+						{# Action assignation #}
+						<div class="badge-card-action">
+							<form action="/badges/{{ badge.id }}/update" method="POST">
+								<input type="text" name="nfc" value="{{ badge.nfc }}" placeholder="Code NFC" required>
+								<select name="userId">
+									<option value="">-- Aucun --</option>
+
+									{# Si le badge est déjà assigné, on garde l'utilisateur actuel dans la liste #}
+									{% if badge.user %}
+										<option value="{{ badge.user.id }}" selected>
+											{{ badge.user.lastName }}
+											{{ badge.user.firstName }}
+											(actuel)
+										</option>
+									{% endif %}
+
+									{# Puis uniquement les employés sans badge #}
+									{% for user in availableUsers %}
+										<option value="{{ user.id }}">
+											{{ user.lastName }}
+											{{ user.firstName }}
+										</option>
+									{% endfor %}
+								</select>
+
+								<button type="submit" class="btn-update">
+									{{ badge.user ? 'Modifier' : 'Assigner' }}
+								</button>
+							</form>
+							<form action="/badges/{{badge.id}}/delete" method="POST">
+								<button type="submit" class="btn-delete">Supprimer</button>
+							</form>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+	</div>
 
 
 	<!-- Tableau employés -->
 	<div class="card">
 		<div class="section-header">
 			<h2>Employés</h2>
-			<a href="/users/create" class="btn btn-primary btn-sm">+ Ajouter un employé</a>
+
+			{#Formulaire Ajouter un employé #}
+			<form action="/users/add" method="POST" class="form-inline">
+				<input type="text" name="firstName" placeholder="Prénom*" required>
+				<input type="text" name="lastName" placeholder="Nom*" required>
+				<input type="email" name="email" placeholder="Email*" required>
+				<input type="text" name="gender" placeholder="Genre">
+				<input type="number" name="age" placeholder="Age" min="0">
+				<input type="password" name="password" placeholder="Mot de passe" required>
+				<button type="submit" class="btn-add">+ Ajouter un employé</button>
+			</form>
+
 		</div>
+
 
 		{% if users is empty %}
 			<p class="empty">Aucun employé enregistré.</p>
 		{% else %}
-			<table>
-				<thead>
-					<tr>
-						<th>Nom</th>
-						<th>Prénom</th>
-						<th>Email</th>
-						<th>Badge</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for user in users %}
+			<div class="table-wrap">
+				<table>
+					<thead>
 						<tr>
-							<td>
-								<strong>{{ user.lastName }}</strong>
-							</td>
-							<td>{{ user.firstName }}</td>
-							<td>{{ user.email }}</td>
-							<td>
-								{% if user.badge %}
-									<span class="badge-status assigned">{{ user.badge.nfc }}</span>
-								{% else %}
-									<span class="badge-status free">Aucun</span>
-								{% endif %}
-							</td>
-							<td>
-								<div class="actions">
-									<a href="/users/{{ user.id }}/edit" class="btn btn-ghost btn-sm">Modifier</a>
-									<form action="/users/{{ user.id }}/delete" method="POST">
-										<button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
-									</form>
-								</div>
-							</td>
+							<th>Nom</th>
+							<th>Prénom</th>
+							<th>Email</th>
+							<th>Badge</th>
+							<th>Genre</th>
+							<th>Age</th>
+							<th>Mot de passe</th>
+							<th></th>
 						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{% for user in users %}
+
+							{# Ligne lecture #}
+							<tr id="row-view-{{ user.id }}" class="row-view">
+								<td>
+									<strong>{{ user.lastName }}</strong>
+								</td>
+								<td>{{ user.firstName }}</td>
+								<td>{{ user.email }}</td>
+								<td>
+									{% if user.badge %}
+										<span class="badge-status assigned">{{ user.badge.nfc }}</span>
+									{% else %}
+										<span class="badge-status free">Aucun</span>
+									{% endif %}
+								</td>
+								<td>{{ user.gender }}</td>
+								<td>{{ user.age }}</td>
+								<td>{{ user.password }}</td>
+								<td>
+									<div class="actions">
+										<button type="button" class="btn btn-ghost btn-sm" onclick="toggleEdit({{ user.id }})">Modifier</button>
+										<form action="/users/{{ user.id }}/delete" method="POST">
+											<button type="submit" class="btn-delete">Supprimer</button>
+										</form>
+									</div>
+								</td>
+							</tr>
+
+							{# Ligne édition #}
+							<tr id="row-edit-{{ user.id }}" class="row-edit">
+								<td><input type="text" name="lastName" value="{{ user.lastName }}" placeholder="Nom*" required></td>
+								<td><input type="text" name="firstName" value="{{ user.firstName }}" placeholder="Prénom*" required></td>
+								<td><input type="email" name="email" value="{{ user.email }}" placeholder="Email*" required></td>
+								<td></td> {# Badge - colonne 4 #}
+								<td><input type="text" name="gender" value="{{ user.gender }}" placeholder="Genre"></td>
+								<td><input type="number" name="age" value="{{ user.age }}" placeholder="Âge" min="0"></td>
+								<td><input type="text" name="password" value="{{ user.password }}" placeholder="Mot de passe"></td>
+								<td>
+									<div class="inline-edit-actions">
+										<button type="submit" class="btn-update">Confirmer</button>
+										<button type="button" class="btn-delete" onclick="toggleEdit({{ user.id }})">Annuler</button>
+									</div>
+								</td>
+							</tr>
+							{# Formulaire vide associé via l'attribut form= #}
+							<form id="form-edit-{{ user.id }}" action="/users/{{ user.id }}/update" method="POST"></form>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
 		{% endif %}
-		<div>
-			<a href="/users/create" class="add-link">
-				+ Ajouter un employé
-			</a>
-		</div>
 	</div>
+{% endblock %}
+
+{% block script %}
+	<script src="/js/dashboard.js"></script>
 {% endblock %}

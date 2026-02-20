@@ -1,78 +1,705 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+/* =========================================
+   COULEURS & POLICES
+   ========================================= */
+
+:root {
+    --bleufonce : #067a91;
+    --vert-fonce: #1a5c52;
+    --vert-bleu: #4ab390;
+    --vert-moyen: #3d9e8e;
+    --vert-pale:  #c8ebe6;
+    --vert-leger: #eef8f6;
+    --rouge:      #e74c3c;
+    --rouge-pale: #fdecea;
+    --texte:      #0f2926;
+    --texte-gris: #4a6b67;
+    --blanc:      #ffffff;
+    --fond:       #f4faf9;
+}
+
+/* =========================================
+   RESET DE BASE
+   ========================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--fond);
+    color: var(--texte);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
 img {
     display: block;
-    width: 100%;
-    height: auto;
+    max-width: 100%;
 }
+
+/* =========================================
+   MISE EN PAGE GÉNÉRALE
+   ========================================= */
+
+.app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    padding: 30px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* =========================================
+   BARRE DE NAVIGATION
+   ========================================= */
 
 .nav-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem 1rem 280px;
-    border-bottom: 1px solid #ddd;
-}
-
-.user-info {
-    display: flex;
-    gap: .5em;
-    align-items: center;
-}
-
-.sidebar {
-    position: fixed;
+    padding: 0 24px;
+    height: 60px;
+    background: var(--blanc);
+    border-bottom: 2px solid var(--vert-pale);
+    position: sticky;
     top: 0;
-    left: 0;
-    bottom: 0;
-    width: 250px;
-    border: 1px solid #ddd;
-    background-color: #ffffff;
+    z-index: 10;
 }
 
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+/* Logo */
+.nav-logo {
+    height: 36px;
+    width: auto;
 }
 
-.sidebar ul li a {
-    display: block;
-    padding: 1rem;
-    color: #333;
+/* Titre de la page */
+.page-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--texte);
 }
 
-.sidebar ul li a:hover {
-    background-color: #ddd;
-}
-
-.sidebar .brand {
+/* Zone droite : entreprise + logout */
+.nav-right {
     display: flex;
     align-items: center;
-    padding: 1rem;
-    border-bottom: 1px solid #ddd;
+    gap: 12px;
 }
 
+/* Badge avec le nom de l'entreprise */
+.company-name {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--vert-pale);
+    color: var(--vert-fonce);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 999px;
+}
+
+/* Bouton Logout */
+.logout-btn {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--texte-gris);
+    padding: 6px 14px;
+    border: 1px solid var(--vert-pale);
+    border-radius: 999px;
+}
+
+.logout-btn:hover {
+    background: var(--rouge-pale);
+    color: var(--rouge);
+    border-color: var(--rouge-pale);
+}
+
+/* =========================================
+   MESSAGES D'ERREUR / SUCCÈS
+   ========================================= */
+
+.alert-error {
+    background: var(--rouge-pale);
+    color: var(--rouge);
+    padding: 12px 24px;
+    font-weight: 500;
+}
+
+.alert-success {
+    background: #d4f5e2;
+    color: #2d7a50;
+    padding: 12px 24px;
+    font-weight: 500;
+}
+
+/* =========================================
+   CARTES DE STATISTIQUES (en haut)
+   ========================================= */
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.stat-card {
+    background: var(--blanc);
+    border: 1px solid var(--vert-pale);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* La 3e carte est en vert foncé */
+.stat-card.active {
+    background: var(--bleufonce);
+    border-color: var(--bleufonce);
+}
+
+.stat-card.active .stat-label { color: rgba(255, 255, 255, 0.6); }
+.stat-card.active .stat-value { color: white; }
+
+/* Icône ronde */
 .stat-icon {
-    width: 32px;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--vert-leger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
-main {
-    padding: 2rem 2rem 2rem 290px;
+.stat-icon img {
+    width: 22px;
+    height: 22px;
+    filter: invert(26%) sepia(60%) saturate(500%) hue-rotate(130deg);
 }
 
+.stat-card.active .stat-icon {
+    background: rgba(255, 255, 255, 0.15);
+}
 
-.badge-success::before {
+.stat-card.active .stat-icon img {
+    filter: brightness(0) invert(1);
+}
+
+/* Texte dans les stats */
+.stat-label {
+    font-size: 12px;
+    color: #8aaba7;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* =========================================
+   CARTE (conteneur blanc arrondi)
+   ========================================= */
+
+.card {
+    background: var(--blanc);
+    border: 1px solid var(--vert-pale);
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* En-tête d'une section : titre + formulaire côte à côte */
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.section-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* =========================================
+   CARTES DE BADGES
+   ========================================= */
+
+.badge-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+/* Une carte de badge */
+.badge-card {
+    background: var(--blanc);
+    border: 1px solid var(--vert-pale);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+}
+
+/* Badge disponible : fond légèrement coloré */
+.badge-card.free {
+    background: var(--vert-leger);
+}
+
+/* Numéro NFC */
+.badge-card-title {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* Nom de l'employé ou "Disponible" */
+.badge-card-name {
+    font-size: 13px;
+    color: var(--texte-gris);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Petit point de couleur devant le nom */
+.badge-card-name::before {
     content: '';
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    background-color: var(--green);
-    border-radius: 100%;
-    margin-right: .5em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--vert-moyen);
+    flex-shrink: 0;
 }
 
-.badge-success {
-    border-radius: 100000px;
-    background-color: var(--green-light);
-    color: var(--green);
-    padding: .5em 1.25em;
+.badge-card.free .badge-card-name::before {
+    background: #4caf7d;
 }
+
+/* Zone avec les boutons d'action */
+.badge-card-action {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.badge-card-action form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Input dans une carte badge */
+.badge-card-action input[type="text"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--vert-pale);
+    border-radius: 8px;
+    background: var(--fond);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+}
+
+.badge-card-action input[type="text"]:focus {
+    border-color: var(--vert-moyen);
+    background: white;
+}
+
+/* Select dans une carte badge */
+.badge-card-action select {
+    width: 100%;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid var(--vert-pale);
+    border-radius: 8px;
+    background: var(--fond);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+}
+
+.badge-card-action select:focus {
+    border-color: var(--vert-moyen);
+}
+
+/* =========================================
+   BOUTONS
+   ========================================= */
+
+/* Bouton vert principal (Créer, Ajouter) */
+.btn-create,
+.btn-add {
+    background: var(--vert-fonce);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btn-create:hover,
+.btn-add:hover {
+    background: #155047;
+}
+
+/* Bouton Assigner / Modifier (dans les cartes badge) */
+.btn-update {
+    width: 100%;
+    background: transparent;
+    color: var(--vert-fonce);
+    border: 1px solid rgba(20, 120, 20, 0.6);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-update:hover {
+    background: var(--vert-bleu);
+    border-color: var(--vert-fonce)
+}
+
+.btn-update:hover {
+    background: var(--vert-pale);
+}
+
+/* Bouton Supprimer */
+.btn-delete {
+    width: 100%;
+    background: transparent;
+    color: var(--rouge);
+    border: 1px solid rgba(231, 76, 60, 0.3);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    background: var(--rouge-pale);
+    border-color: var(--rouge);
+}
+
+/* Bouton Modifier dans le tableau */
+.btn.btn-ghost.btn-sm {
+    background: transparent;
+    color: var(--vert-fonce);
+    border: 1px solid var(--vert-pale);
+    border-radius: 999px;
+    padding: 5px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn.btn-ghost.btn-sm:hover {
+    background: var(--vert-pale);
+}
+
+/* Supprimer dans le tableau : plus petit */
+.actions .btn-delete {
+    width: auto;
+    border-radius: 999px;
+    padding: 5px 14px;
+    font-size: 12px;
+}
+
+/* =========================================
+   FORMULAIRE EN LIGNE (ajouter un employé)
+   ========================================= */
+
+.form-inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.form-inline input {
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--vert-pale);
+    border-radius: 8px;
+    background: var(--vert-leger);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+    min-width: 110px;
+}
+
+.form-inline input:focus {
+    border-color: var(--vert-moyen);
+    background: white;
+}
+
+/* =========================================
+   TABLEAU
+   ========================================= */
+
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    min-width: 600px; /*Ajoute le scroll horizontal*/
+}
+
+/* En-têtes */
+thead th {
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #8aaba7;
+    border-bottom: 2px solid var(--vert-pale);
+}
+
+/* Lignes */
+tbody tr {
+    border-bottom: 1px solid var(--vert-leger);
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background: var(--vert-leger);
+}
+
+tbody td {
+    padding: 13px 14px;
+    vertical-align: middle;
+}
+
+/* Badge NFC dans le tableau */
+.badge-status {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-status.assigned {
+    background: var(--vert-pale);
+    color: var(--vert-fonce);
+}
+
+.badge-status.free {
+    background: var(--fond);
+    color: #8aaba7;
+    border: 1px solid var(--vert-pale);
+}
+
+/* Zone boutons dans le tableau */
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+/* Texte quand liste vide */
+.empty {
+    color: #8aaba7;
+    font-size: 13.5px;
+    padding: 10px 0;
+}
+
+/* =========================================
+   LIGNE D'ÉDITION (toggle Modifier)
+   ========================================= */
+
+/* Cachée par défaut */
+.row-edit {
+    display: none;
+}
+
+/* Visible quand on clique sur Modifier */
+.row-edit.visible {
+    display: table-row;
+}
+
+/* Ligne originale grisée pendant l'édition */
+.row-view.editing {
+    opacity: 0.4;
+}
+
+.row-edit td {
+    background: var(--vert-leger);
+    padding: 12px 14px;
+}
+
+/* Formulaire dans la ligne d'édition */
+.inline-edit-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.inline-edit-form input {
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--vert-pale);
+    border-radius: 8px;
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+    flex: 1;
+    min-width: 100px;
+}
+
+.inline-edit-form input:focus {
+    border-color: var(--vert-moyen);
+}
+
+.inline-edit-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.inline-edit-actions .btn-update,
+.inline-edit-actions .btn-delete {
+    width: auto;
+    padding: 8px 16px;
+}
+
+.inline-edit-form input:nth-child(1) { max-width: 80px; }   /* Nom */
+.inline-edit-form input:nth-child(2) { max-width: 80px; }   /* Prénom */
+.inline-edit-form input:nth-child(3) { max-width: 180px; }  /* Email */
+.inline-edit-form input:nth-child(4) { max-width: 80px; }   /* Genre */
+.inline-edit-form input:nth-child(5) { max-width: 60px; }   /* Âge */
+.inline-edit-form input:nth-child(6) { max-width: 100px; }  /* Mot de passe */
+
+.row-edit td input {
+    width: 100%;
+    height: 34px;
+    padding: 0 8px;
+    border: 1px solid var(--vert-pale);
+    border-radius: 6px;
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+}
+
+.row-edit td input:focus {
+    border-color: var(--vert-moyen);
+}
+
+/* =========================================
+   RESPONSIVE MOBILE
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    /* Navbar : cacher le titre au centre */
+    .nav-center {
+        display: none;
+    }
+
+    .nav-bar {
+        padding: 0 16px;
+    }
+
+    /* Stats en colonne */
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+
+    /* Cards badge en colonne */
+    .badge-cards {
+        grid-template-columns: 1fr;
+    }
+
+    /* Formulaire en colonne */
+    .form-inline {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-inline input,
+    .btn-add,
+    .btn-create {
+        width: 100%;
+    }
+
+    /* Tableau scrollable */
+    table {
+        min-width: 700px;
+    }
+
+    /* Actions en colonne */
+    .actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .actions .btn-delete,
+    .actions .btn.btn-ghost.btn-sm {
+        width: 100%;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    /* Formulaire d'édition en colonne */
+    .inline-edit-form {
+        flex-direction: column;
+    }
+
+    .inline-edit-form input {
+        width: 100%;
+    }
+
+    .inline-edit-actions {
+        width: 100%;
+    }
+
+    .inline-edit-actions .btn-update,
+    .inline-edit-actions .btn-delete {
+        flex: 1;
+    }

@@ -1,65 +1,45 @@
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* =========================================
+   COULEURS
+   ========================================= */
 
 :root {
-    --teal:       #2a9d8f;
-    --teal-dark:  #1f7a6e;
-    --teal-light: #e8f5f3;
-    --green: #1fab69;
-    --green-light: #e8fde9;
-    --red:        #e63946;
-    --red-light:  #fde8ea;
-    --gray-100:   #f1f3f5;
-    --gray-200:   #e9ecef;
-    --gray-400:   #adb5bd;
-    --gray-600:   #6c757d;
-    --gray-800:   #343a40;
-    --white:      #ffffff;
-    --radius:     10px;
-    --radius-sm:  6px;
-    --shadow-sm:  0 1px 3px rgba(0,0,0,.08);
+    --vert:       #2a9d8f;
+    --vert-fonce: #1f7a6e;
+    --vert-leger: #e8f5f3;
+    --rouge:      #e63946;
+    --rouge-pale: #fde8ea;
+    --gris-clair: #f1f3f5;
+    --gris-bord:  #e9ecef;
+    --gris-texte: #6c757d;
+    --texte:      #343a40;
+    --blanc:      #ffffff;
+}
+
+/* =========================================
+   RESET DE BASE
+   ========================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
     font-family: 'Nunito', sans-serif;
-    background: var(--white);
-    color: var(--gray-800);
+    background: var(--blanc);
+    color: var(--texte);
     min-height: 100vh;
 }
 
-.text-white {
-    color: var(--white) !important; /* Important permet de donner la priorité à la couleur blanche même si elle est redéfinie plus bas (sauf si plus bas on met aussi !important sur la propriété */
+a {
+    text-decoration: none;
+    color: inherit;
 }
 
-/* LOGO */
-
-.auth-logo img {
-    height: 3.5rem;
-    width: auto;
-    margin-bottom: 2px;
-}
-
-/*AUTH LAYOUT*/
-
-.auth-layout {
-    display:flex;
-    min-height: 100vh;
-}
-
-/* Panneau gauche — formulaire */
-.auth-right {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 48px 80px;
-    background: var(--white);
-}
-
-.auth-right--centered {
-    justify-content: center;
-    gap: 24px;
-}
+/* =========================================
+   LOGO
+   ========================================= */
 
 .auth-logo {
     display: flex;
@@ -67,33 +47,35 @@ body {
     gap: 8px;
     font-size: 1.1rem;
     font-weight: 800;
-    color: var(--teal);
-    text-decoration: none;
+    color: var(--vert);
     margin-bottom: 28px;
 }
 
-.auth-right h1 {
-    font-size: 3rem;
-    margin-bottom: .25em;
-    font-weight: 900;
-    color: var(--teal);
-    text-align: center;
+.auth-logo img {
+    height: 3.5rem;
+    width: auto;
 }
 
-/* Panneau droit — image */
+/* =========================================
+   MISE EN PAGE DE LA PAGE DE CONNEXION
+   (deux colonnes : formulaire à droite, image à gauche)
+   ========================================= */
+
+.auth-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Colonne gauche — image */
 .auth-left {
     width: 45%;
     max-width: 673px;
     position: relative;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 40px 32px;
-    background: var(--gray-100);
+    background: var(--gris-clair);
 }
 
+/* L'image couvre toute la colonne */
 .auth-left img {
     position: absolute;
     inset: 0;
@@ -103,6 +85,7 @@ body {
     object-position: center top;
 }
 
+/* Texte par-dessus l'image */
 .auth-left-content {
     position: absolute;
     top: 15%;
@@ -112,7 +95,7 @@ body {
 }
 
 .auth-left-text {
-    color: var(--teal);
+    color: var(--vert);
     font-size: 1.6rem;
     font-weight: 900;
     margin-bottom: 8px;
@@ -120,36 +103,154 @@ body {
 }
 
 .auth-left-subtitle {
-    color: var(--teal);
+    color: var(--vert);
     font-size: .9rem;
     font-weight: 600;
     margin-bottom: 24px;
 }
 
+/* Bouton en bas de la colonne image */
 .auth-left-cta {
     display: inline-block;
-    background: var(--green);
-    color: var(--white);
+    background: #1fab69;
+    color: var(--blanc);
     font-size: 1rem;
     font-weight: 800;
     padding: 14px 36px;
     border-radius: 30px;
-    text-decoration: none;
     position: absolute;
     bottom: 150px;
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
-    transition: opacity .15s;
 }
 
-.auth-left-cta:hover { opacity: .88; }
+.auth-left-cta:hover {
+    opacity: .88;
+}
 
-/* Page Inscription réussie */
+/* Colonne droite — formulaire */
+.auth-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 80px;
+    background: var(--blanc);
+}
+
+.auth-right h1 {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--vert);
+    text-align: center;
+    margin-bottom: .25em;
+}
+
+/* =========================================
+   FORMULAIRE DE CONNEXION
+   ========================================= */
+
+/* Groupe de champ (label + input) */
+.form-group {
+    width: 100%;
+    max-width: 420px;
+    margin-bottom: 14px;
+}
+
+/* Input avec icône à gauche */
+.input-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* L'icône est positionnée à l'intérieur du champ */
+.input-icon svg {
+    position: absolute;
+    left: 14px;
+    color: var(--gris-texte);
+    pointer-events: none;
+}
+
+/* Style de base des inputs */
+.input-icon input,
+.form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--gris-clair);
+    border: 1.5px solid var(--gris-bord);
+    border-radius: 6px;
+    font-family: 'Nunito', sans-serif;
+    font-size: .95rem;
+    color: var(--texte);
+    outline: none;
+}
+
+/* Décalage pour laisser la place à l'icône */
+.input-icon input {
+    padding-left: 44px;
+}
+
+/* Focus : bordure verte */
+.input-icon input:focus,
+.form-group input:focus {
+    border-color: var(--vert);
+    background: var(--blanc);
+}
+
+/* Lien "Mot de passe oublié" */
+.forgot {
+    display: block;
+    text-align: center;
+    font-size: .85rem;
+    color: var(--gris-texte);
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.forgot:hover {
+    color: var(--vert);
+}
+
+/* Bouton Se connecter */
+.btn-login {
+    width: 100%;
+    max-width: 420px;
+    padding: 15px;
+    background: var(--vert);
+    color: var(--blanc);
+    border: none;
+    border-radius: 30px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 800;
+    cursor: pointer;
+    letter-spacing: .02em;
+}
+
+.btn-login:hover {
+    background: var(--vert-fonce);
+}
+
+/* Variante avec icône */
+.btn-login--icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    width: auto;
+    padding: 15px 40px;
+}
+
+/* =========================================
+   MESSAGE INSCRIPTION RÉUSSIE
+   ========================================= */
+
 .success-box {
-    background: var(--green);
-    color: var(--white);
-    border-radius: var(--radius);
+    background: #1fab69;
+    color: var(--blanc);
+    border-radius: 10px;
     padding: 32px 48px;
     text-align: center;
     font-size: 1.4rem;
@@ -160,121 +261,51 @@ body {
     max-width: 420px;
 }
 
-.btn-login--icon {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    width: auto;
-    padding: 15px 40px;
-    text-decoration: none;
-}
-/* FORMULAIRE */
+/* =========================================
+   MESSAGES D'ERREUR / SUCCÈS
+   ========================================= */
 
-.form-group {
+.alert-error,
+.alert-success {
     width: 100%;
     max-width: 420px;
-    margin-bottom: 14px;
-}
-
-.input-icon {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.input-icon svg {
-    position: absolute;
-    left: 14px;
-    color: var(--gray-400);
-    pointer-events: none;
-    flex-shrink: 0;
-}
-
-.input-icon input,
-.form-group input {
-    width: 100%;
-    padding: 14px 16px; /* sans icône */
-    background: var(--gray-100);
-    border: 1.5px solid var(--gray-200);
-    border-radius: var(--radius-sm);
-    font-family: 'Nunito', sans-serif;
-    font-size: .95rem;
-    color: var(--gray-800);
-    outline: none;
-    transition: border-color .15s;
-}
-
-.input-icon input {
-    padding: 14px 16px 14px 44px;
-}
-
-.input-icon input:focus,
-.form-group input:focus {
-    border-color: var(--teal);
-    background: var(--white);
-}
-
-.forgot {
-    display: block;
-    text-align: center;
-    font-size: .85rem;
-    color: var(--gray-600);
-    text-decoration: none;
-    margin-bottom: 20px;
-    font-weight: 600;
-}
-
-.forgot:hover { color: var(--teal); }
-
-.btn-login {
-    width: 100%;
-    max-width: 420px;
-    padding: 15px;
-    background: var(--teal);
-    color: var(--white);
-    border: none;
-    border-radius: 30px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 1.05rem;
-    font-weight: 800;
-    cursor: pointer;
-    transition: background .15s;
-    letter-spacing: .02em;
-}
-
-.btn-login:hover { background: var(--teal-dark); }
-
-/* ALERT */
-
-.alert-error, .alert-success {
-    width: 100%;
-    max-width: 420px;
-    background: var(--red-light);
-    color: var(--red);
-    border-radius: var(--radius-sm);
     padding: 10px 16px;
+    border-radius: 6px;
     font-weight: 700;
     font-size: .85rem;
     margin-bottom: 16px;
 }
 
-.alert-success {
-    background: var(--green-light);
-    color: var(--green);
+.alert-error {
+    background: var(--rouge-pale);
+    color: var(--rouge);
 }
 
-/* RESPONSIVE */
+.alert-success {
+    background: #e8fde9;
+    color: #1fab69;
+}
+
+/* Classe utilitaire */
+.text-white {
+    color: var(--blanc);
+}
+
+/* =========================================
+   RESPONSIVE MOBILE
+   ========================================= */
 
 @media (max-width: 768px) {
 
+    /* Les deux colonnes passent en une seule */
     .auth-layout {
         flex-direction: column;
     }
 
+    /* L'image devient une bannière en haut */
     .auth-left {
         width: 100%;
         height: 280px;
-        min-height: unset;
     }
 
     .auth-left img {
@@ -285,6 +316,7 @@ body {
         bottom: 20px;
     }
 
+    /* Le formulaire prend toute la largeur */
     .auth-right {
         padding: 40px 24px;
     }
@@ -293,10 +325,7 @@ body {
         font-size: 1.5rem;
     }
 
-    .form-group {
-        max-width: 100%;
-    }
-
+    .form-group,
     .btn-login {
         max-width: 100%;
     }
@@ -310,10 +339,6 @@ body {
 
     .auth-left-text {
         font-size: 1.2rem;
-    }
-
-    .auth-left-subtitle {
-        font-size: .8rem;
     }
 
     .auth-right {
